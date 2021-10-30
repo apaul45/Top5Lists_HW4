@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 const ObjectId = Schema.Types.ObjectId
-
+//Making a User schema; information is firstName, lastName, email, and passwordHash (used for verifying if entered pass and hashed pass are the same)
 const UserSchema = new Schema(
     {
         firstName: { type: String, required: true },

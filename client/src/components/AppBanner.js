@@ -49,6 +49,7 @@ export default function AppBanner() {
             onClose={handleMenuClose}
         >
             <MenuItem onClick={handleMenuClose}><Link to='/register/'>Create New Account</Link></MenuItem>
+            <MenuItem onClick={handleMenuClose}><Link to='/login/'>Login</Link></MenuItem>
         </Menu>
     );
     const loggedInMenu = 
@@ -72,6 +73,7 @@ export default function AppBanner() {
 
     let editToolbar = "";
     let menu = loggedOutMenu;
+    //Only make the menu the logged in menu if the user is logged in
     if (auth.loggedIn) {
         menu = loggedInMenu;
         if (store.currentList) {
@@ -80,6 +82,7 @@ export default function AppBanner() {
     }
     
     function getAccountMenu(loggedIn) {
+        //Account circle is the icon that apppears onn the top right of the default screen
         return <AccountCircle />;
     }
 
@@ -96,6 +99,7 @@ export default function AppBanner() {
                         <Link style={{ textDecoration: 'none', color: 'white' }} to='/'>T<sup>5</sup>L</Link>
                     </Typography>
                     <Box sx={{ flexGrow: 1 }}>{editToolbar}</Box>
+                    {/*This is the code for the user icon button: when this is pressed, create new account & login buttons should be shown*/}
                     <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
                         <IconButton
                             size="large"

@@ -30,7 +30,7 @@ export const deleteTop5ListById = (id) => api.delete(`/top5list/${id}`)
 export const getTop5ListById = (id) => api.get(`/top5list/${id}`)
 
 export const getLoggedIn = () => api.get(`/loggedIn/`);
-export const registerUser = (payload) => api.post(`/register/`, payload)
+export const registerUser = (payload) => api.post(`/register/`, payload);
 export const loginUser = (payload) => api.post(`/login/`, payload)
 export const logoutUser = () => api.get(`/logout/`)
 
