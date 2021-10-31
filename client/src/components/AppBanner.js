@@ -82,7 +82,11 @@ export default function AppBanner() {
     }
     
     function getAccountMenu(loggedIn) {
-        //Account circle is the icon that apppears onn the top right of the default screen
+        //IF USER IS LOGGED IN, THEN DISPLAY USER INITIALS
+        if (loggedIn){
+            return auth.user.firstName.substring(0,1) + auth.user.lastName.substring(0,1);
+        }
+        ////Account circle is the icon that apppears on the top right of the default screen
         return <AccountCircle />;
     }
 
@@ -100,6 +104,7 @@ export default function AppBanner() {
                     </Typography>
                     <Box sx={{ flexGrow: 1 }}>{editToolbar}</Box>
                     {/*This is the code for the user icon button: when this is pressed, create new account & login buttons should be shown*/}
+                    {/* When user is logged in, then getAccMenu will display initials, else it will display the AccountCircle */}
                     <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
                         <IconButton
                             size="large"
