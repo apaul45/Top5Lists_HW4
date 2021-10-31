@@ -350,7 +350,11 @@ function GlobalStoreContextProvider(props) {
         store.currentList.items[index] = newItem;
         store.updateCurrentList();
     }
-
+    store.addUpdateItemTransaction = function (index, newText) {
+        let oldText = store.currentList.items[index];
+        let transaction = new UpdateItem_Transaction(store, index, oldText, newText);
+        tps.addTransaction(transaction);
+    }
     store.updateCurrentList = async function () {
         const response = await api.updateTop5ListById(store.currentList._id, store.currentList);
         if (response.data.success) {
