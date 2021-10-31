@@ -33,6 +33,7 @@ createTop5List = (req, res) => {
 }
 
 updateTop5List = async (req, res) => {
+    //body should include the user email
     const body = req.body
     console.log("updateTop5List: " + JSON.stringify(body));
     if (!body) {
@@ -53,6 +54,8 @@ updateTop5List = async (req, res) => {
 
         top5List.name = body.name
         top5List.items = body.items
+        //Make sure the top5List's email is set to the right one
+        top5List.email = body.email
         top5List
             .save()
             .then(() => {
@@ -60,6 +63,7 @@ updateTop5List = async (req, res) => {
                 return res.status(200).json({
                     success: true,
                     id: top5List._id,
+                    email: top5List.email,
                     message: 'Top 5 List updated!',
                 })
             })
@@ -120,14 +124,16 @@ getTop5ListPairs = async (req, res) => {
                 .json({ success: false, error: 'Top 5 Lists not found' })
         }
         else {
-            // PUT ALL THE LISTS INTO ID, NAME PAIRS
+            // PUT ALL THE LISTS INTO ID, NAME, & EMAIL PAIRS
             let pairs = [];
             for (let key in top5Lists) {
                 let list = top5Lists[key];
                 let pair = {
                     _id: list._id,
-                    name: list.name
+                    name: list.name,
+                    email: list.email,
                 };
+                console.log(pair);
                 pairs.push(pair);
             }
             return res.status(200).json({ success: true, idNamePairs: pairs })

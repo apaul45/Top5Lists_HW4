@@ -175,6 +175,10 @@ function GlobalStoreContextProvider(props) {
                         response = await api.getTop5ListPairs();
                         if (response.data.success) {
                             let pairsArray = response.data.idNamePairs;
+                            //MAKE SURE TO ONLY DISPLAYS THIS USERS LIST UPON LIST NAME CHANGE
+                            if (auth.loggedIn){
+                                pairsArray = pairsArray.filter(pair => pair.email === auth.user.email);
+                            }
                             storeReducer({
                                 type: GlobalStoreActionType.CHANGE_LIST_NAME,
                                 payload: {
@@ -192,10 +196,11 @@ function GlobalStoreContextProvider(props) {
     }
 
     // THIS FUNCTION PROCESSES CLOSING THE CURRENTLY LOADED LIST
-    store.closeCurrentList = function () {
+    store.closeCurrentList = async function () {
+        //Make sure idNamePairs are updated before returning to the home screen
+        store.loadIdNamePairs();
         storeReducer({
             type: GlobalStoreActionType.CLOSE_CURRENT_LIST,
-            payload: {}
         });
         
         tps.clearAllTransactions();
@@ -205,10 +210,12 @@ function GlobalStoreContextProvider(props) {
     // THIS FUNCTION CREATES A NEW LIST
     store.createNewList = async function () {
         let newListName = "Untitled" + store.newListCounter;
+        //MAKE SURE TO ASSOCIATE THE NEW LIST WITH THE USER'S EMAIL, SO THAT
+        //IT CAN BE IDENTIFIED AS THIS USER's LIST
         let payload = {
             name: newListName,
             items: ["?", "?", "?", "?", "?"],
-            ownerEmail: auth.user.email
+            email: auth.user.email
         };
         const response = await api.createTop5List(payload);
         if (response.data.success) {
@@ -219,7 +226,6 @@ function GlobalStoreContextProvider(props) {
                 payload: newList
             }
             );
-
             // IF IT'S A VALID LIST THEN LET'S START EDITING IT
             history.push("/top5list/" + newList._id);
         }
@@ -233,6 +239,10 @@ function GlobalStoreContextProvider(props) {
         const response = await api.getTop5ListPairs();
         if (response.data.success) {
             let pairsArray = response.data.idNamePairs;
+            //IDENTIFY THE USER's LISTS FROM THEIR EMAIL
+            if (auth.loggedIn){
+                pairsArray = pairsArray.filter(pair => pair.email === auth.user.email);
+            }
             storeReducer({
                 type: GlobalStoreActionType.LOAD_ID_NAME_PAIRS,
                 payload: pairsArray
@@ -260,8 +270,13 @@ function GlobalStoreContextProvider(props) {
     }
 
     store.deleteList = async function (listToDelete) {
+        let currentDeleteList = (store.currentList ? store.currentList._id === listToDelete._id ? true : false : false);
         let response = await api.deleteTop5ListById(listToDelete._id);
         if (response.data.success) {
+            //If the deleted list was also the current list, then clear all transactions
+            if (currentDeleteList){
+                tps.clearAllTransactions();
+            }
             store.loadIdNamePairs();
             history.push("/");
         }
