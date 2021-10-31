@@ -28,11 +28,17 @@ registerUser = async (req, res) => {
     try {
         const { firstName, lastName, email, password, passwordVerify } = req.body;
         if (!firstName || !lastName || !email || !password || !passwordVerify) {
+            console.log(res
+            .status(400)
+            .json({ errorMessage: "Please enter all required fields." }));
             return res
                 .status(400)
                 .json({ errorMessage: "Please enter all required fields." });
         }
         if (password.length < 8) {
+            console.log(res
+                .status(400)
+                .json({ errorMessage: "Please enter a password of at least 8 characters." }));
             return res
                 .status(400)
                 .json({
@@ -40,6 +46,9 @@ registerUser = async (req, res) => {
                 });
         }
         if (password !== passwordVerify) {
+            console.log(res
+                .status(400)
+                .json({ errorMessage:  "Please enter the same password twice." }));
             return res
                 .status(400)
                 .json({
@@ -48,6 +57,11 @@ registerUser = async (req, res) => {
         }
         const existingUser = await User.findOne({ email: email });
         if (existingUser) {
+            console.log(res
+                .status(400)
+                .json({
+                    errorMessage:  "An account with this email address already exists."
+                }))
             return res
                 .status(400)
                 .json({

@@ -10,7 +10,8 @@ import {
     Statusbar,
     WorkspaceScreen, 
     LoginScreen,
-    DeleteModal
+    DeleteModal,
+    AccountErrorModal
 } from './components'
 /*
     This is our application's top-level component.
@@ -42,6 +43,7 @@ const App = () => {
                     </Switch>
                     <Statusbar />
                     <DeleteModal />
+                    <AccountErrorModal />
                 </GlobalStoreContextProvider>
             </AuthContextProvider>
         </BrowserRouter>
