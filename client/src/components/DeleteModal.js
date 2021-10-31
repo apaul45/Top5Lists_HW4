@@ -39,7 +39,7 @@ function DeleteModal() {
         store.deleteMarkedList();
     }
     function handleCloseModal(event) {
-        store.hideDeleteListModal();
+        store.unmarkListForDeletion();
     }
     return (
         <div>
