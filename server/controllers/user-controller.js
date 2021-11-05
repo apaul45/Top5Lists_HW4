@@ -154,7 +154,12 @@ loginUser = async (req, res) => {
     }
 }
 logoutUser = (req, res) => {
-    res.clearCookie("token");
+    try{
+        res.clearCookie("token").status(200).json({ success: true });
+    }
+    catch(err){
+        res.status(500).send();
+    }
 }
 module.exports = {
     getLoggedIn,

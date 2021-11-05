@@ -66,14 +66,14 @@ function AuthContextProvider(props) {
                         errorMessage: "",
                     }
                 });
-            }, (response)=>{
+            }, ()=>{
                 authReducer({
                     type: AuthActionType.GET_LOGGED_IN,
                     payload: {
                         loggedIn: false,
                         //work plz
                         user: null,
-                        errorMessage: response.response.data.errorMessage,
+                        errorMessage: "AN ERROR OCCURRED",
                     }
             })
         });
