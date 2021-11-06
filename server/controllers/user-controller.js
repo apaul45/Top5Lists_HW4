@@ -14,12 +14,12 @@ getLoggedIn = async (req, res) => {
                     lastName: loggedInUser.lastName,
                     email: loggedInUser.email,
                 }
-            }).send();
-        })
+            });
+        });
     }
     catch(err){
         console.error(err);
-        res.status(500).send();
+        res.status(500);
     }
 }
 //registerUser uses salting & crypt to create a new hashed password,
@@ -161,6 +161,7 @@ logoutUser = (req, res) => {
         res.status(500).send();
     }
 }
+
 module.exports = {
     getLoggedIn,
     registerUser,

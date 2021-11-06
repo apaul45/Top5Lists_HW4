@@ -11,7 +11,7 @@ import {
     WorkspaceScreen, 
     LoginScreen,
     DeleteModal,
-    AccountErrorModal
+    AccountErrorModal,
 } from './components'
 /*
     This is our application's top-level component.

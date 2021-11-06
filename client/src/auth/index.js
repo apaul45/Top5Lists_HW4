@@ -21,9 +21,9 @@ function AuthContextProvider(props) {
     const history = useHistory();
 
     useEffect(() => {
-        if(auth.loggedIn)
+        if(auth)
         auth.getLoggedIn();
-    }, []);
+    });
 
     const authReducer = (action) => {
         const { type, payload } = action;
@@ -54,31 +54,57 @@ function AuthContextProvider(props) {
         }
     }
 
-    auth.getLoggedIn = function () {
-        async function getLoggedInn(){
-            const response = await api.getLoggedIn().then((response)=>{
+    // auth.getLoggedIn = function () {
+    //     async function getLoggedInn(){
+    //         const response = await api.getLoggedIn().then((response)=>{
+    //             authReducer({
+    //                 type: AuthActionType.GET_LOGGED_IN,
+    //                 payload: {
+    //                     loggedIn: response.data.loggedIn,
+    //                     //work plz
+    //                     user: response.data.user,
+    //                     errorMessage: "",
+    //                 }
+    //             });
+    //         }, ()=>{
+    //             authReducer({
+    //                 type: AuthActionType.GET_LOGGED_IN,
+    //                 payload: {
+    //                     loggedIn: false,
+    //                     //work plz
+    //                     user: null,
+    //                     errorMessage: "AN ERROR OCCURRED",
+    //                 }
+    //         })
+    //     });
+    // }
+    //     getLoggedInn();    
+    // }
+    auth.getLoggedIn = async function () {
+        try{
+            const response = await api.getLoggedIn();
+            if (response.status === 200) {
                 authReducer({
                     type: AuthActionType.GET_LOGGED_IN,
                     payload: {
                         loggedIn: response.data.loggedIn,
-                        //work plz
                         user: response.data.user,
                         errorMessage: "",
                     }
                 });
-            }, ()=>{
-                authReducer({
-                    type: AuthActionType.GET_LOGGED_IN,
-                    payload: {
-                        loggedIn: false,
-                        //work plz
-                        user: null,
-                        errorMessage: "AN ERROR OCCURRED",
-                    }
+            }
+        }
+        catch{
+            authReducer({
+                type: AuthActionType.GET_LOGGED_IN,
+                payload: {
+                    loggedIn: false,
+                    //work plz
+                    user: null,
+                    errorMessage: "",
+                }
             })
-        });
-    }
-        getLoggedInn();    
+        }
     }
     auth.registerUser = async function(userData, store) {
         try{
