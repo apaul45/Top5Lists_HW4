@@ -21,9 +21,8 @@ function AuthContextProvider(props) {
     const history = useHistory();
 
     useEffect(() => {
-        if(auth)
         auth.getLoggedIn();
-    });
+    },[auth.errorMessage]);
 
     const authReducer = (action) => {
         const { type, payload } = action;
@@ -89,7 +88,7 @@ function AuthContextProvider(props) {
                     payload: {
                         loggedIn: response.data.loggedIn,
                         user: response.data.user,
-                        errorMessage: "",
+                        errorMessage: auth.errorMessage,
                     }
                 });
             }
@@ -101,7 +100,7 @@ function AuthContextProvider(props) {
                     loggedIn: false,
                     //work plz
                     user: null,
-                    errorMessage: "",
+                    errorMessage: auth.errorMessage,
                 }
             })
         }
